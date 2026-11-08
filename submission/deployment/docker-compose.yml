@@ -1,0 +1,129 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: pdf_to_audio_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres_secure_password_replace_in_prod}
+      POSTGRES_DB: ${POSTGRES_DB:-pdf_to_audio}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pdf_to_audio"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: pdf_to_audio_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_network
+
+  processor-api:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile.processor
+    container_name: pdf_to_audio_processor_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD:-postgres_secure_password_replace_in_prod}@postgres:5432/pdf_to_audio?schema=public
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - INTERNAL_API_KEY=${INTERNAL_API_KEY:-antigravity-internal-secret-token}
+      - STORAGE_ROOT=/app/storage
+      - TTS_PROVIDER=${TTS_PROVIDER:-edge}
+      - AZURE_SPEECH_KEY=${AZURE_SPEECH_KEY:-}
+      - AZURE_SPEECH_REGION=${AZURE_SPEECH_REGION:-}
+      - MAX_UPLOAD_SIZE_MB=${MAX_UPLOAD_SIZE_MB:-50}
+      - MAX_PAGES_LIMIT=${MAX_PAGES_LIMIT:-500}
+    volumes:
+      - shared_storage:/app/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - app_network
+
+  celery-worker:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile.worker
+    container_name: pdf_to_audio_worker
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD:-postgres_secure_password_replace_in_prod}@postgres:5432/pdf_to_audio?schema=public
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - INTERNAL_API_KEY=${INTERNAL_API_KEY:-antigravity-internal-secret-token}
+      - STORAGE_ROOT=/app/storage
+      - TTS_PROVIDER=${TTS_PROVIDER:-edge}
+      - AZURE_SPEECH_KEY=${AZURE_SPEECH_KEY:-}
+      - AZURE_SPEECH_REGION=${AZURE_SPEECH_REGION:-}
+    volumes:
+      - shared_storage:/app/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - app_network
+
+  web:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile.web
+    container_name: pdf_to_audio_web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD:-postgres_secure_password_replace_in_prod}@postgres:5432/pdf_to_audio?schema=public
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-antigravity-secure-development-secret-key-32chars}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
+      - PROCESSOR_API_URL=http://processor-api:8000
+      - INTERNAL_API_KEY=${INTERNAL_API_KEY:-antigravity-internal-secret-token}
+      - STORAGE_ROOT=/app/storage
+    volumes:
+      - shared_storage:/app/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+      processor-api:
+        condition: service_started
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+  redis_data:
+  shared_storage:
+
+networks:
+  app_network:
+    driver: bridge
+

@@ -1,0 +1,59 @@
+NEXT.JS PRODUCTION BUILD REPORT
+Target: @pdf-to-audio/web
+Node Version: 26.0+
+Next.js Version: 14.2.21
+TypeScript Version: 5.7.2 Strict
+
+==================================================
+Prisma Client Generation:
+✔ Generated Prisma Client (v5.22.0) in 262ms
+
+Optimization & Compilation:
+✓ Compiled successfully
+✓ Linting and checking validity of types passed
+✓ Collecting page data passed
+✓ Generating static pages (18/18) passed
+✓ Finalizing page optimization passed
+✓ Collecting build traces passed
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    178 B          94.1 kB
+├ ○ /_not-found                          138 B          87.3 kB
+├ ○ /admin                               3.75 kB         101 kB
+├ ƒ /api/admin/jobs                      0 B                0 B
+├ ƒ /api/admin/logs                      0 B                0 B
+├ ƒ /api/admin/statistics                0 B                0 B
+├ ƒ /api/admin/users                     0 B                0 B
+├ ƒ /api/audio/[id]                      0 B                0 B
+├ ƒ /api/audio/[id]/download             0 B                0 B
+├ ƒ /api/auth/[...nextauth]              0 B                0 B
+├ ƒ /api/auth/register                   0 B                0 B
+├ ƒ /api/conversions                     0 B                0 B
+├ ƒ /api/conversions/[id]                0 B                0 B
+├ ƒ /api/conversions/[id]/cancel         0 B                0 B
+├ ƒ /api/conversions/[id]/progress       0 B                0 B
+├ ƒ /api/conversions/[id]/retry          0 B                0 B
+├ ƒ /api/documents                       0 B                0 B
+├ ƒ /api/documents/[id]                  0 B                0 B
+├ ƒ /api/documents/upload                0 B                0 B
+├ ○ /api/health                          0 B                0 B
+├ ƒ /api/health/ready                    0 B                0 B
+├ ○ /api/languages                       0 B                0 B
+├ ƒ /api/subscription                    0 B                0 B
+├ ƒ /api/usage                           0 B                0 B
+├ ƒ /api/voices                          0 B                0 B
+├ ƒ /conversions/[id]                    7.07 kB         111 kB
+├ ○ /convert                             22.9 kB         120 kB
+├ ○ /dashboard                           3.58 kB         108 kB
+├ ○ /history                             4.01 kB         108 kB
+├ ○ /login                               2.11 kB         106 kB
+├ ○ /pricing                             2.92 kB         100 kB
+├ ○ /register                            2.35 kB         107 kB
+└ ○ /settings                            3.98 kB         101 kB
++ First Load JS shared by all            87.2 kB
+
+○ (Static)  prerendered as static content
+ƒ (Dynamic) server-rendered on demand
+
+Exit Code: 0 (SUCCESS)
+==================================================

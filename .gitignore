@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Next.js
+apps/web/.next/
+apps/web/out/
+apps/web/build/
+.turbo/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment
+.env
+.env*.local
+!.env.example
+
+# Local storage and temporary processing files
+storage/uploads/*
+storage/chunks/*
+storage/audio/*
+!storage/**/.gitkeep
+
+# Testing and Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+coverage/
+test-results/
+playwright-report/
+.playwright/
+
+# OS and Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+

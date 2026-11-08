@@ -1,0 +1,29 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies: FFmpeg, Tesseract OCR, and OCR language models
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    tesseract-ocr \
+    tesseract-ocr-eng \
+    tesseract-ocr-spa \
+    tesseract-ocr-fra \
+    tesseract-ocr-deu \
+    gcc \
+    libpq-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install python dependencies
+COPY services/processor/requirements.txt /app/services/processor/requirements.txt
+RUN pip install --no-cache-dir -r /app/services/processor/requirements.txt psycopg2-binary httpx
+
+# Copy source code
+COPY services/processor /app/services/processor
+COPY packages /app/packages
+
+ENV PYTHONPATH="/app:/app/services/processor"
+
+CMD ["celery", "-A", "services.processor.app.workers.celery_app", "worker", "--loglevel=info", "-Q", "conversions,maintenance", "-c", "2"]
+
