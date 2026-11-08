@@ -53,6 +53,7 @@ def on_startup():
 
 # Register API Routers
 app.include_router(health.router)
+app.include_router(health.router, prefix="")
 app.include_router(voices.router)
 app.include_router(documents.router)
 app.include_router(conversions.router)

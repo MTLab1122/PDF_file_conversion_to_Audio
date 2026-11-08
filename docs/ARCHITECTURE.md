@@ -103,3 +103,4 @@ sequenceDiagram
 - **File Validation**: MIME types are ignored; binary magic bytes (`%PDF-`) and EOF markers are strictly verified.
 - **Path Traversal Guard**: Filenames are cryptographically randomized using UUIDv4; paths outside resolved storage directories are rejected with 403 Forbidden.
 - **Internal Service Protection**: FastAPI processing endpoints require a shared secret header (`X-Internal-Secret`) matching `INTERNAL_SERVICE_SECRET`.
+

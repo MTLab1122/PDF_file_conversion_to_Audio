@@ -51,4 +51,7 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+tools/
+apps/web/storage/
+submission/source-code/
 

@@ -61,3 +61,4 @@ This guide resolves common configuration, pipeline, and deployment issues encoun
 ### Issue: "ERR_PNPM_IGNORED_BUILDS on @prisma/engines or esbuild"
 - **Symptom**: pnpm 12+ warns that native package build scripts are ignored.
 - **Solution**: Run `pnpm approve-builds --all` once at the monorepo root.
+

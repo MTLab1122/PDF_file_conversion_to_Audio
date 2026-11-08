@@ -158,3 +158,4 @@ pnpm --filter web build
 ## License
 
 MIT License. Designed for commercial SaaS deployment and academic engineering evaluation.
+

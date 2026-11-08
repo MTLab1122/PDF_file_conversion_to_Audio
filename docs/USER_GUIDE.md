@@ -80,3 +80,4 @@ When conversion reaches `COMPLETED`:
   - Update default preferred voice and speech speed.
   - View monthly quota consumption meters.
   - Delete user account and all stored documents in the Danger Zone.
+

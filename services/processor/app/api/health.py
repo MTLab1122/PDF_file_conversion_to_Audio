@@ -3,6 +3,7 @@ import shutil
 import subprocess
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
+from sqlalchemy import text
 from services.processor.app.config import settings
 from services.processor.app.database.session import SessionLocal
 
@@ -32,7 +33,7 @@ def readiness_check():
     # 1. Database Check
     try:
         db = SessionLocal()
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         db.close()
         checks["database"] = True
     except Exception as e:

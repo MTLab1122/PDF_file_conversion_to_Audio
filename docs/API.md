@@ -163,3 +163,4 @@ Upgrades or downgrades subscription tier (`FREE`, `PRO`, `BUSINESS`).
 - **`POST /api/v1/conversions/start`**: Enqueues conversion tasks to the Celery Redis broker.
 - **`GET /api/v1/conversions/{id}/status`**: Queries Celery job state and progress metadata.
 - **`POST /api/v1/conversions/{id}/cancel`**: Terminates worker execution for an active job.
+

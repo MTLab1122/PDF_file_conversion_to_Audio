@@ -156,3 +156,4 @@ Services will start:
 - FastAPI Docs: `http://localhost:8000/docs`
 - PostgreSQL: `localhost:5432`
 - Redis: `localhost:6379`
+

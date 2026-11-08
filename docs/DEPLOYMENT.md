@@ -120,3 +120,4 @@ server {
 - **Next.js Database Readiness**: `GET https://audiodoc.yourdomain.com/api/health/ready`
 - **Processor Liveness**: `GET http://localhost:8000/health`
 - **Processor Readiness**: `GET http://localhost:8000/health/ready`
+

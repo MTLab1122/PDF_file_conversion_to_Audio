@@ -71,3 +71,4 @@ flowchart LR
 
 - The `/api/audio/[id]` endpoint verifies session ownership before opening the audio file descriptor.
 - HTTP 206 Partial Content range requests are validated to prevent integer overflow or out-of-bounds byte reads.
+

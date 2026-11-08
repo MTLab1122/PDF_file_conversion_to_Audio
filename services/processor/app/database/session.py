@@ -4,7 +4,7 @@ from services.processor.app.config import settings
 from services.processor.app.core.logger import logger
 
 # Convert postgres:// to postgresql+psycopg2:// for SQLAlchemy
-db_url = settings.DATABASE_URL
+db_url = settings.DATABASE_URL.split("?schema=")[0]
 if db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql+psycopg2://", 1)
 elif db_url.startswith("postgresql://"):

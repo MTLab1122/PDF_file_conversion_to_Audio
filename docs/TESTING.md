@@ -111,3 +111,4 @@ pnpm --filter web build
 ```
 
 Expected result: Zero TypeScript errors, zero lint errors, all routes statically prerendered or flagged dynamic as appropriate.
+
