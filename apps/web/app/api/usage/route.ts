@@ -60,22 +60,27 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    const usagePayload = {
+      userId,
+      tier: userTier,
+      planName: planLimits.name,
+      conversionsThisMonth: usage.conversionsCount,
+      conversionsUsed: usage.conversionsCount,
+      maxConversionsPerMonth: planLimits.maxConversionsPerMonth,
+      conversionsLimit: planLimits.maxConversionsPerMonth,
+      pagesThisMonth: usage.pagesProcessed,
+      maxPagesPerDoc: planLimits.maxPagesPerDoc,
+      storageUsedBytes: Number(usage.storageBytes),
+      maxFileSizeMb: planLimits.maxFileSizeMb,
+      activeJobsCount,
+      maxConcurrentJobs: planLimits.maxConcurrentJobs,
+      premiumVoices: planLimits.premiumVoices,
+      resetDate: usage.periodEnd.toISOString(),
+    };
+
     return NextResponse.json({
-      usage: {
-        userId,
-        tier: userTier,
-        planName: planLimits.name,
-        conversionsThisMonth: usage.conversionsCount,
-        maxConversionsPerMonth: planLimits.maxConversionsPerMonth,
-        pagesThisMonth: usage.pagesProcessed,
-        maxPagesPerDoc: planLimits.maxPagesPerDoc,
-        storageUsedBytes: Number(usage.storageBytes),
-        maxFileSizeMb: planLimits.maxFileSizeMb,
-        activeJobsCount,
-        maxConcurrentJobs: planLimits.maxConcurrentJobs,
-        premiumVoices: planLimits.premiumVoices,
-        resetDate: usage.periodEnd.toISOString(),
-      },
+      usage: usagePayload,
+      ...usagePayload,
     });
   } catch (error: any) {
     console.error("Usage summary error:", error);

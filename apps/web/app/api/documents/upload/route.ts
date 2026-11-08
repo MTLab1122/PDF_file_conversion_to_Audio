@@ -142,6 +142,8 @@ export async function POST(req: NextRequest) {
         document: {
           id: documentRecord.id,
           originalName: documentRecord.originalName,
+          originalFilename: documentRecord.originalName,
+          fileSize: Number(documentRecord.fileSizeBytes),
           fileSizeBytes: Number(documentRecord.fileSizeBytes),
           pageCount: documentRecord.pageCount,
           createdAt: documentRecord.createdAt.toISOString(),

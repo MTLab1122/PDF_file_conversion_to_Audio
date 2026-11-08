@@ -52,16 +52,30 @@ export default function SettingsPage() {
       .catch(() => {});
   }, [status, session]);
 
-  const handleSavePreferences = (e: React.FormEvent) => {
+  const handleSavePreferences = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
     setSuccess(null);
 
-    // Save preferences
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/account", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          preferredVoice,
+          preferredSpeed,
+        }),
+      });
+      if (res.ok) {
+        setSuccess("Preferences updated successfully.");
+      } else {
+        alert("Failed to update preferences.");
+      }
+    } catch {
+      alert("Network error updating preferences.");
+    } finally {
       setSaving(false);
-      setSuccess("Preferences updated successfully.");
-    }, 600);
+    }
   };
 
   const handleDeleteAccount = async () => {
@@ -74,11 +88,14 @@ export default function SettingsPage() {
     }
 
     try {
-      const res = await fetch("/api/admin/users", {
+      const res = await fetch("/api/account", {
         method: "DELETE",
       });
-      // Sign out
-      signOut({ callbackUrl: "/" });
+      if (res.ok) {
+        signOut({ callbackUrl: "/" });
+      } else {
+        alert("Failed to delete account.");
+      }
     } catch {
       alert("Error deleting account.");
     }

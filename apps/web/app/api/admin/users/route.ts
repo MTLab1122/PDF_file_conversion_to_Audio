@@ -39,6 +39,7 @@ export async function GET(req: NextRequest) {
       createdAt: u.createdAt.toISOString(),
       documentsCount: u._count.documents,
       conversionsCount: u._count.conversionJobs,
+      _count: u._count,
     }));
 
     return NextResponse.json({ users: serialized });
@@ -46,4 +47,39 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Failed to fetch users." }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const session = await getServerAuthSession();
+    if (!session?.user?.id || session.user.role !== UserRole.ADMIN) {
+      return NextResponse.json({ error: "Forbidden: Admin privileges required." }, { status: 403 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const targetUserId = searchParams.get("id");
+
+    if (!targetUserId) {
+      return NextResponse.json({ error: "Missing user ID parameter." }, { status: 400 });
+    }
+
+    if (targetUserId === session.user.id) {
+      return NextResponse.json({ error: "Admins cannot delete their own account from the admin console." }, { status: 400 });
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await tx.audioFile.deleteMany({ where: { userId: targetUserId } });
+      await tx.conversionJob.deleteMany({ where: { userId: targetUserId } });
+      await tx.document.deleteMany({ where: { userId: targetUserId } });
+      await tx.subscription.deleteMany({ where: { userId: targetUserId } });
+      await tx.usageRecord.deleteMany({ where: { userId: targetUserId } });
+      await tx.voicePreference.deleteMany({ where: { userId: targetUserId } });
+      await tx.user.delete({ where: { id: targetUserId } });
+    });
+
+    return NextResponse.json({ message: "User deleted successfully." });
+  } catch (error: any) {
+    return NextResponse.json({ error: "Failed to delete user." }, { status: 500 });
+  }
+}
+
 

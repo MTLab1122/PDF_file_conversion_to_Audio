@@ -67,8 +67,8 @@ export function ConversionProgressView({
       const json = await res.json();
       setData(json);
 
-      if (json.status === "COMPLETED" && json.audioFile && onCompleted) {
-        onCompleted(json.audioFile);
+      if ((json.status === "COMPLETED" || json.isComplete) && onCompleted) {
+        onCompleted(json.audioFile || { id: json.audioFileId || "", durationSeconds: 0 });
       }
     } catch {
       // transient network glitch

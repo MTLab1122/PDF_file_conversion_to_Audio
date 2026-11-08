@@ -17,15 +17,25 @@ export async function GET(req: NextRequest) {
       take: 50,
       include: {
         user: { select: { email: true, name: true } },
-        document: { select: { originalName: true, fileSizeBytes: true } },
+        document: { select: { originalName: true, fileSizeBytes: true, pageCount: true } },
         audioFile: { select: { id: true, durationSeconds: true } },
       },
     });
 
     const serialized = jobs.map((j) => ({
       id: j.id,
+      user: {
+        email: j.user.email,
+        name: j.user.name,
+      },
       userEmail: j.user.email,
+      document: {
+        originalFilename: j.document.originalName,
+        fileSize: Number(j.document.fileSizeBytes),
+        pageCount: j.document.pageCount,
+      },
       documentName: j.document.originalName,
+      voiceName: j.voiceId,
       status: j.status,
       currentStage: j.currentStage,
       progressPercent: j.progressPercent,

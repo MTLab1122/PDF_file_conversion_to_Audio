@@ -30,6 +30,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       document: {
         id: document.id,
         originalName: document.originalName,
+        originalFilename: document.originalName,
+        fileSize: Number(document.fileSizeBytes),
         fileSizeBytes: Number(document.fileSizeBytes),
         pageCount: document.pageCount,
         isScanned: document.isScanned,

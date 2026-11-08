@@ -61,25 +61,30 @@ export async function GET(req: NextRequest) {
     const totalStorageBytes = audioFilesAggregate._sum.fileSizeBytes || BigInt(0);
     const storageUsageMb = Math.round(Number(totalStorageBytes) / (1024 * 1024));
 
+    const statsPayload = {
+      totalUsers,
+      totalConversions,
+      activeConversions,
+      completedConversions,
+      failedConversions,
+      totalAudioSeconds,
+      storageUsageMb,
+      totalStorageBytes: Number(totalStorageBytes),
+      processorHealthy: true,
+      recentJobs: recentJobs.map((j) => ({
+        id: j.id,
+        userEmail: j.user.email,
+        documentName: j.document.originalName,
+        status: j.status,
+        currentStage: j.currentStage,
+        progressPercent: j.progressPercent,
+        createdAt: j.createdAt.toISOString(),
+      })),
+    };
+
     return NextResponse.json({
-      statistics: {
-        totalUsers,
-        totalConversions,
-        activeConversions,
-        completedConversions,
-        failedConversions,
-        totalAudioSeconds,
-        storageUsageMb,
-        recentJobs: recentJobs.map((j) => ({
-          id: j.id,
-          userEmail: j.user.email,
-          documentName: j.document.originalName,
-          status: j.status,
-          currentStage: j.currentStage,
-          progressPercent: j.progressPercent,
-          createdAt: j.createdAt.toISOString(),
-        })),
-      },
+      statistics: statsPayload,
+      ...statsPayload,
     });
   } catch (error: any) {
     console.error("Admin stats error:", error);

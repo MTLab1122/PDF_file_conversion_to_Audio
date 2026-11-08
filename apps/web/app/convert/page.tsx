@@ -52,6 +52,7 @@ export default function ConvertWizardPage() {
           voiceName: voiceId,
           language,
           speed,
+          speechSpeed: speed,
           audioFormat: "MP3",
         }),
       });

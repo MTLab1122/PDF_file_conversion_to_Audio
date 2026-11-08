@@ -3,10 +3,11 @@ Target: @pdf-to-audio/web
 Node Version: 26.0+
 Next.js Version: 14.2.21
 TypeScript Version: 5.7.2 Strict
+Generated At: 2026-11-08T23:34:31+05:00
 
 ==================================================
 Prisma Client Generation:
-✔ Generated Prisma Client (v5.22.0) in 262ms
+✔ Generated Prisma Client (v5.22.0) in 250ms
 
 Optimization & Compilation:
 ✓ Compiled successfully
@@ -20,6 +21,7 @@ Route (app)                              Size     First Load JS
 ┌ ○ /                                    178 B          94.1 kB
 ├ ○ /_not-found                          138 B          87.3 kB
 ├ ○ /admin                               3.75 kB         101 kB
+├ ƒ /api/account                         0 B                0 B
 ├ ƒ /api/admin/jobs                      0 B                0 B
 ├ ƒ /api/admin/logs                      0 B                0 B
 ├ ƒ /api/admin/statistics                0 B                0 B
@@ -42,19 +44,20 @@ Route (app)                              Size     First Load JS
 ├ ƒ /api/subscription                    0 B                0 B
 ├ ƒ /api/usage                           0 B                0 B
 ├ ƒ /api/voices                          0 B                0 B
-├ ƒ /conversions/[id]                    7.07 kB         111 kB
+├ ƒ /conversions/[id]                    7.09 kB         111 kB
 ├ ○ /convert                             22.9 kB         120 kB
 ├ ○ /dashboard                           3.58 kB         108 kB
 ├ ○ /history                             4.01 kB         108 kB
 ├ ○ /login                               2.11 kB         106 kB
 ├ ○ /pricing                             2.92 kB         100 kB
 ├ ○ /register                            2.35 kB         107 kB
-└ ○ /settings                            3.98 kB         101 kB
+└ ○ /settings                            4.09 kB         101 kB
 + First Load JS shared by all            87.2 kB
+  ├ chunks/410-8dd6849efd7cfd05.js       31.6 kB
+  ├ chunks/68c9fb2b-1a5c9f259a184c92.js  53.6 kB
+  └ other shared chunks (total)          1.95 kB
 
-○ (Static)  prerendered as static content
-ƒ (Dynamic) server-rendered on demand
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
 
-Exit Code: 0 (SUCCESS)
-==================================================
-
+Result: 0 errors, 0 warnings. All 18 production pages and 22 API endpoints compiled cleanly.

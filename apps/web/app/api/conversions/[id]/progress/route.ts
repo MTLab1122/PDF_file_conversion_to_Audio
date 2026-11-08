@@ -26,6 +26,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         audioFile: {
           select: {
             id: true,
+            durationSeconds: true,
+            fileSizeBytes: true,
           },
         },
       },
@@ -51,6 +53,13 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       isFailed,
       isCancelled,
       audioFileId: job.audioFile?.id || null,
+      audioFile: job.audioFile
+        ? {
+            id: job.audioFile.id,
+            durationSeconds: job.audioFile.durationSeconds,
+            fileSizeBytes: Number(job.audioFile.fileSizeBytes),
+          }
+        : null,
     });
   } catch (error: any) {
     return NextResponse.json({ error: "Failed to fetch progress." }, { status: 500 });

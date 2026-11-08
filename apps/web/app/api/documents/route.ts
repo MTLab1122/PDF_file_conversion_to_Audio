@@ -39,7 +39,15 @@ export async function GET(req: NextRequest) {
       latestJob: d.conversionJobs[0] || null,
     }));
 
-    return NextResponse.json({ documents: serialized });
+    return NextResponse.json({
+      documents: serialized,
+      total: serialized.length,
+      pagination: {
+        total: serialized.length,
+        page: 1,
+        limit: serialized.length,
+      },
+    });
   } catch (error: any) {
     console.error("Fetch documents error:", error);
     return NextResponse.json({ error: "Failed to fetch documents." }, { status: 500 });

@@ -9,13 +9,19 @@ import {
   SubscriptionTier,
 } from "@pdf-to-audio/shared";
 
-const startConversionSchema = z.object({
-  documentId: z.string().uuid("Invalid document ID"),
-  voiceId: z.string().default("en-US-ChristopherNeural"),
-  language: z.string().default("en-US"),
-  speechSpeed: z.number().min(0.5).max(2.0).default(1.0),
-  idempotencyKey: z.string().optional(),
-});
+const startConversionSchema = z
+  .object({
+    documentId: z.string().uuid("Invalid document ID"),
+    voiceId: z.string().default("en-US-ChristopherNeural"),
+    language: z.string().default("en-US"),
+    speechSpeed: z.number().min(0.5).max(2.0).optional(),
+    speed: z.number().min(0.5).max(2.0).optional(),
+    idempotencyKey: z.string().optional(),
+  })
+  .transform((data) => ({
+    ...data,
+    speechSpeed: data.speechSpeed ?? data.speed ?? 1.0,
+  }));
 
 export async function POST(req: NextRequest) {
   try {
@@ -254,7 +260,10 @@ export async function GET(req: NextRequest) {
       currentStage: j.currentStage,
       progressPercent: j.progressPercent,
       voiceId: j.voiceId,
+      voiceName: j.voiceId,
       speechSpeed: j.speechSpeed,
+      speed: j.speechSpeed,
+      language: j.language,
       totalChunks: j.totalChunks,
       completedChunks: j.completedChunks,
       errorMessage: j.errorMessage,
@@ -264,6 +273,8 @@ export async function GET(req: NextRequest) {
         ? {
             id: j.document.id,
             originalName: j.document.originalName,
+            originalFilename: j.document.originalName,
+            fileSize: Number(j.document.fileSizeBytes),
             fileSizeBytes: Number(j.document.fileSizeBytes),
             pageCount: j.document.pageCount,
           }
@@ -281,7 +292,16 @@ export async function GET(req: NextRequest) {
         : null,
     }));
 
-    return NextResponse.json({ conversions: serialized });
+    return NextResponse.json({
+      conversions: serialized,
+      jobs: serialized,
+      total: serialized.length,
+      pagination: {
+        total: serialized.length,
+        page: 1,
+        limit: serialized.length,
+      },
+    });
   } catch (error: any) {
     console.error("List conversions error:", error);
     return NextResponse.json({ error: "Failed to list conversions." }, { status: 500 });
