@@ -54,5 +54,6 @@ Thumbs.db
 tools/
 dump.rdb
 apps/web/storage/
+.vercel
 submission/source-code/
 
