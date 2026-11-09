@@ -15,7 +15,13 @@
 [![Tests](https://img.shields.io/badge/Tests-87%2F87%20Passed%20(100%25)-brightgreen?style=for-the-badge)](#-automated-testing--qa-verification)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-[**Live Demo & Documentation**](#-247-production-deployment-guide) • [**Key Features**](#-key-features) • [**Architecture**](#-system-architecture) • [**Screenshots**](#-visual-walkthrough) • [**Quickstart**](#-quickstart-guide) • [**Deployment**](#-247-production-deployment-guide)
+<br/>
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMTLab1122%2FPDF_file_conversion_to_Audio&root-directory=apps%2Fweb&project-name=audiodoc-saas&framework=nextjs)
+
+<br/>
+
+[**Deploy to Vercel**](#-247-production-deployment-guide) • [**Key Features**](#-key-features) • [**Architecture**](#-system-architecture) • [**Screenshots**](#-visual-walkthrough) • [**Quickstart**](#-quickstart-guide) • [**Deployment**](#-247-production-deployment-guide)
 
 </div>
 
